@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import httpx
 
 NOTION_API_KEY = os.environ["NOTION_API_KEY"]
@@ -7,9 +7,13 @@ NOTION_DATABASE_ID = os.environ["NOTION_DATABASE_ID"]
 LINE_ACCESS_TOKEN = os.environ["LINE_ACCESS_TOKEN"]
 LINE_USER_ID = os.environ["LINE_USER_ID"]
 
+# 日本時間
+JST = timezone(timedelta(hours=9))
+
 
 def get_tomorrow_events():
-    tomorrow = datetime.now().date() + timedelta(days=1)
+    now = datetime.now(JST)
+    tomorrow = now.date() + timedelta(days=1)
     start = tomorrow.isoformat()
     end = (tomorrow + timedelta(days=1)).isoformat()
     
@@ -35,8 +39,10 @@ def get_tomorrow_events():
     )
     
     data = response.json()
-    events = []
+    print(f"Query date: {start}")  # デバッグ用
+    print(f"Response: {data}")      # デバッグ用
     
+    events = []
     for page in data.get("results", []):
         title_prop = page["properties"].get("名前") or page["properties"].get("Name")
         if title_prop and title_prop["title"]:
