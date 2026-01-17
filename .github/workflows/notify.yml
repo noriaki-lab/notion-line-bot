@@ -2,7 +2,7 @@ name: Notify Tomorrow Events
 
 on:
   schedule:
-    - cron: '0 12 * * *'  # UTC 12:00 = JST 21:00
+    - cron: '*/5 * * * *'    # UTC 12:00 = JST 21:00
   workflow_dispatch:  # 手動実行用
 
 jobs:
