@@ -14,8 +14,10 @@ JST = timezone(timedelta(hours=9))
 def get_tomorrow_events():
     now = datetime.now(JST)
     tomorrow = now.date() + timedelta(days=1)
-    start = tomorrow.isoformat()
-    end = (tomorrow + timedelta(days=1)).isoformat()
+    next_day = tomorrow + timedelta(days=1)
+    # タイムゾーン付きのdatetime形式で指定（Notion APIの比較精度向上のため）
+    start = datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0, tzinfo=JST).isoformat()
+    end = datetime(next_day.year, next_day.month, next_day.day, 0, 0, 0, tzinfo=JST).isoformat()
     
     date_property = "日付"  # 自分のDBに合わせる
     
