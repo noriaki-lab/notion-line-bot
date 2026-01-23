@@ -30,11 +30,16 @@ def get_tomorrow_events():
         },
         json={
             "filter": {
-                "property": date_property,
-                "date": {
-                    "on_or_after": start,
-                    "before": end,
-                }
+                "and": [
+                    {
+                        "property": date_property,
+                        "date": {"on_or_after": start}
+                    },
+                    {
+                        "property": date_property,
+                        "date": {"before": end}
+                    }
+                ]
             },
             "sorts": [{"property": date_property, "direction": "ascending"}]
         }
